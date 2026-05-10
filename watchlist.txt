@@ -1,0 +1,56 @@
+# ═══════════════════════════════════════════════════════════════════
+# FESP — Personal Watchlist (Deep Enrichment Targets)
+# ═══════════════════════════════════════════════════════════════════
+#
+# Estos son los tickers que recibirán enriquecimiento profundo de
+# Alpha Vantage (OVERVIEW + EARNINGS + NEWS_SENTIMENT + INSIDER + CALENDAR).
+#
+# IMPORTANTE: Cada ticker en esta lista consume 5 requests de AV por día.
+# Plan free de Alpha Vantage = 25 req/día.
+#
+# Recomendación según tu plan:
+#   Plan Free (25/día):    máximo 5 tickers
+#   Plan Premium 75/min:   hasta 100 tickers (rota diariamente)
+#   Plan Premium 1200/min: tu watchlist completa
+#
+# REGLAS DE FORMATO:
+#   - Un ticker por línea
+#   - Líneas que empiecen con # son comentarios (ignoradas)
+#   - Líneas vacías ignoradas
+#   - Los tickers se procesan en orden hasta agotar la cuota
+#
+# Si quieres rotar la watchlist (analizar diferentes tickers cada día),
+# puedes mantener una lista más grande y el sistema procesará solo los
+# primeros N que quepan en tu cuota diaria.
+# ═══════════════════════════════════════════════════════════════════
+
+# ─── Tier 1: Tu top 5 (consumirán 25 AV requests/día = todo el plan free) ───
+AAPL
+MSFT
+NVDA
+GOOGL
+META
+
+# ─── Tier 2: Si tienes más cuota o haces rotación manual ───
+# (Comenta los Tier 1 arriba y descomenta los de abajo para rotar)
+
+# AMZN
+# TSLA
+# JPM
+# V
+# UNH
+# BRK-B
+# JNJ
+
+# ─── Tier 3: Latam ADRs (interesantes para ti) ───
+# CIB
+# EC
+# AVAL
+# ITUB
+# VALE
+
+# ─── Tier 4: Internacionales ───
+# ASML
+# TSM
+# BABA
+# SAP

@@ -1,0 +1,44 @@
+name: Refresh FESP Snapshot
+
+on:
+  schedule:
+    # Daily at 21:30 UTC (after US market close)
+    - cron: "30 21 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build snapshot
+        env:
+          # Keys come from GitHub Secrets — set in Settings → Secrets and variables → Actions
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+          MARKETSTACK_API_KEY: ${{ secrets.MARKETSTACK_API_KEY }}
+        # Free tier optimization:
+        #   --deep-mode lite = 2 AV requests/ticker (OVERVIEW + EARNINGS)
+        #   --deep-top-n 12  = 12 tickers × 2 reqs = 24/25 daily AV quota
+        # If you upgrade to AV Premium, change to --deep-mode full --deep-top-n 25
+        run: python scripts/build_data.py --out-dir data --quiet --deep-mode lite --deep-top-n 12
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/snapshot.json
+          git diff --staged --quiet || git commit -m "Refresh FESP snapshot $(date -u +%Y-%m-%d)"
+          git push
